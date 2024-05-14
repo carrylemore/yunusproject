@@ -1,0 +1,85 @@
+using System;
+using System.Linq;
+
+namespace ArrayMinAndCalculateSalary
+{
+    class Program
+    {
+        static void Main()
+        {
+            Console.Write("Enter the size of the array: ");
+            int arraySize = GetValidIntegerInput();
+
+            var array = new int[arraySize];
+
+            Console.WriteLine("Enter the elements of the array:");
+            for (int i = 0; i < arraySize; i++)
+            {
+                array[i] = GetValidIntegerInput();
+            }
+
+            int min = array.Min();
+            Console.WriteLine($"The smallest value in the array is: {min}");
+
+            // Create instances of different employees
+            var developer = new Developer { Id = 1, Name = "Bill Gaspar", Position = "Developer", Salary = 60000 };
+            var manager = new Manager { Id = 2, Name = "Bob Gab", Position = "Manager", Salary = 80000 };
+            var admin = new Admin { Id = 3, Name = "Ryan Thatcher", Position = "Admin", Salary = 70000 };
+
+            // Display employee details and bonuses
+            Console.WriteLine($"Employee: {developer.Name}, Position: {developer.Position}, Bonus: {developer.CalculateBonus():C}");
+            Console.WriteLine($"Employee: {manager.Name}, Position: {manager.Position}, Bonus: {manager.CalculateBonus():C}");
+            Console.WriteLine($"Employee: {admin.Name}, Position: {admin.Position}, Bonus: {admin.CalculateBonus():C}");
+        }
+
+        static int GetValidIntegerInput()
+        {
+            while (true)
+            {
+                if (int.TryParse(Console.ReadLine(), out int value))
+                {
+                    return value;
+                }
+                Console.WriteLine("Invalid input. Please enter a valid integer.");
+            }
+        }
+    }
+
+    public abstract class Employee
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Position { get; set; }
+        public decimal Salary { get; set; }
+
+        public abstract decimal CalculateBonus();
+    }
+
+    public class Developer : Employee
+    {
+        public override decimal CalculateBonus()
+        {
+            decimal baseBonus = 50000;
+            decimal percentageBonus = Salary * 0.2m;
+            return Math.Max(baseBonus, percentageBonus);
+        }
+    }
+
+    public class Manager : Employee
+    {
+        public override decimal CalculateBonus()
+        {
+            decimal baseBonus = 50000;
+            decimal percentageBonus = Salary * 0.25m;
+            return Math.Max(baseBonus, percentageBonus);
+        }
+    }
+
+    public class Admin : Employee
+    {
+        public override decimal CalculateBonus()
+        {
+            return 50000;
+        }
+    }
+} 
